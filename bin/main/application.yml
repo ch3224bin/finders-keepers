@@ -1,0 +1,4 @@
+config:
+  token:
+    expire-days: 3
+    secret: 29
