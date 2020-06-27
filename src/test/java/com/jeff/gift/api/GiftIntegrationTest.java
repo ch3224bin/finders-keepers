@@ -74,11 +74,11 @@ public class GiftIntegrationTest {
 		mvc.perform(get("/gifts/" + token).header("X-USER-ID", "2345").header("X-ROOM-ID", "ROOM1234"))
 			.andExpect(status().isOk());
 		mvc.perform(get("/gifts/" + token).header("X-USER-ID", "2346").header("X-ROOM-ID", "ROOM1234"))
-		.andExpect(status().isOk());
+			.andExpect(status().isOk());
 		mvc.perform(get("/gifts/" + token).header("X-USER-ID", "2347").header("X-ROOM-ID", "ROOM1234"))
-		.andExpect(status().isOk());
+			.andExpect(status().isOk());
 		mvc.perform(get("/gifts/" + token).header("X-USER-ID", "2348").header("X-ROOM-ID", "ROOM1234"))
-		.andExpect(status().isForbidden());
+			.andExpect(status().isForbidden());
 	}
 	
 	@Test
@@ -102,5 +102,8 @@ public class GiftIntegrationTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.happyPeople", hasSize(1)))
 			.andExpect(jsonPath("$.happyPeople[0].keepers", is("2345")));
+		
+		mvc.perform(get("/gifts/" + token + "/receipt").header("X-USER-ID", "2345").header("X-ROOM-ID", "ROOM1234"))
+			.andExpect(status().isForbidden());
 	}
 }
