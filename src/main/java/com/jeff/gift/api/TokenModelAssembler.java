@@ -15,8 +15,8 @@ public class TokenModelAssembler implements RepresentationModelAssembler<Token, 
 	@Override
 	public EntityModel<Token> toModel(Token token) {
 		return EntityModel.of(token,
-				linkTo(methodOn(GiftController.class).getGiftsByToken(token.getToken())).withSelfRel()
-				// 가져오기 url
+				linkTo(methodOn(GiftController.class).getGiftsInfo(token.getToken())).withSelfRel(),
+				linkTo(methodOn(GiftController.class).getGifts(token.getToken())).withRel("gotcha")
 		);
 	}
 }

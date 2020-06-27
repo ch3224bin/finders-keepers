@@ -1,5 +1,7 @@
 package com.jeff.gift.domain;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,8 +33,23 @@ public class Gift {
 	@Column(name = "AMOUNT", nullable = false)
 	private long amount;
 	
+	@Column(name = "EARN_DATE")
+	private LocalDateTime earnDate;
+	
+	@Column(name = "KEEPERS")
+	private String keepers;
+	
+	@Version
+	@Column(name = "VERSION")
+	private int version;
+	
 	public Gift(Token token, long amount) {
 		this.token = token;
 		this.amount = amount;
+	}
+	
+	public void gotcha(String keepers) {
+		this.keepers = keepers;
+		this.earnDate = LocalDateTime.now();
 	}
 }

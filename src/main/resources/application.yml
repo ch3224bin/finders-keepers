@@ -1,4 +1,12 @@
 config:
   token:
-    expire-days: 3
+    expire-min: 10
     secret: 29
+    read-days: 7
+
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      

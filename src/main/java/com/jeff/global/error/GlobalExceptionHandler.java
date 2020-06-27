@@ -15,14 +15,22 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.jeff.global.error.exception.GlobalException;
 import com.jeff.global.error.exception.UnAuthenticationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	
+	@ExceptionHandler(GlobalException.class)
+    public ResponseEntity<Object> giftException(GlobalException ex) {
+		ApiError apiError =  new ApiError(ex.getErrorCode().getStatus(), ex.getLocalizedMessage(), ex.getErrorCode().getCode(), ex.getValue());
+	    return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), null);
+    }
+	
 	@ExceptionHandler(UnAuthenticationException.class)
     public ResponseEntity<Object> unAuthentication(UnAuthenticationException ex) {
-		ApiError apiError =  new ApiError(HttpStatus.UNAUTHORIZED, ex.getLocalizedMessage(), "");
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		ApiError apiError =  new ApiError(status, ex.getLocalizedMessage(), String.valueOf(status.value()), "");
 	    return handleExceptionInternal(ex, apiError, new HttpHeaders(), apiError.getStatus(), null);
     }
 	
@@ -37,7 +45,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	        errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
 	    }
 	     
-	    ApiError apiError =  new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+	    ApiError apiError =  new ApiError(status, ex.getLocalizedMessage(), String.valueOf(status.value()), errors);
 	    return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
 	}
 
@@ -52,7 +60,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	        errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
 	    }
 	     
-	    ApiError apiError =  new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
+	    ApiError apiError =  new ApiError(status, ex.getLocalizedMessage(), String.valueOf(status.value()), errors);
 	    return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
 	}
 }
